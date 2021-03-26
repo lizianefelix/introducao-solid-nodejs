@@ -1,0 +1,225 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "UserX",
+    "description": "This is an API for for listing and registering users",
+    "version": "1.0.0",
+    "contact": {
+      "email": "liziane.felix@hotmail.com"
+    }
+  },
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Create a new user",
+        "requestBody": {
+          "required": true,
+          "description": "Required fields for user creation",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "name": "liziane felix",
+                  "email": "liz12123@email.com"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "id": "cfbebb79-ca9a-4f99-9b3c-08d4c1a87d25",
+                    "admin": false,
+                    "name": "liziane felix",
+                    "email": "liz12123@email.com",
+                    "created_at": "2021-03-26T16:32:49.759Z",
+                    "updated_at": "2021-03-26T16:32:49.759Z"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "error": "User already exists" 
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Users"],
+        "summary": "List all users for user admin",
+        "description": "Only admin user can access",
+        "parameters": [{
+          "name": "user_id",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"          
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": [
+                    {
+                      "id": "ddbebb00-ca9a-4f99-9b3c-20d4c1a87f12",
+                      "admin": true,
+                      "name": "rocket",
+                      "email": "rocket@email.com",
+                      "created_at": "2021-03-26T16:32:49.759Z",
+                      "updated_at": "2021-03-26T16:32:49.759Z"
+                    },
+                    {
+                      "id": "cfbebb79-ca9a-4f99-9b3c-08d4c1a87d25",
+                      "admin": false,
+                      "name": "liziane felix",
+                      "email": "liz12123@email.com",
+                      "created_at": "2021-03-26T16:32:49.759Z",
+                      "updated_at": "2021-03-26T16:32:49.759Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User not found or User is not admin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "error": "User not found or User is not admin" 
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Return specific user",
+        "parameters": [{
+          "name": "user_id",
+          "in": "path",
+          "required": true,
+          "description": "ID do usuário"
+        }],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "id": "cfbebb79-ca9a-4f99-9b3c-08d4c1a87d25",
+                    "admin": false,
+                    "name": "liziane felix",
+                    "email": "liz12123@email.com",
+                    "created_at": "2021-03-26T16:32:49.759Z",
+                    "updated_at": "2021-03-26T16:32:49.759Z"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "error": "User not found" 
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}/admin": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Make admin user",
+        "parameters": [{
+          "name": "user_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"          
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "id": "cfbebb79-ca9a-4f99-9b3c-08d4c1a87d25",
+                    "admin": false,
+                    "name": "liziane felix",
+                    "email": "liz12123@email.com",
+                    "created_at": "2021-03-26T16:32:49.759Z",
+                    "updated_at": "2021-03-26T16:32:49.759Z"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "error": "User not found" 
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
